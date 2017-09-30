@@ -17,27 +17,31 @@ define('port', default=8888, help='Port to listen on')
 
 
 class EchoHandler(BaseSlashHandler):
+    command = 'echo'
+
     log = getLogger('EchoHandler')
 
-    def handle(self):
+    def handle(self, options, args):
         self.log.debug('handle:')
         self.write_simple_response(self.text)
 
-    def help(self):
-        return 'It echos back what you type'
-
 
 class ItsfineHandler(BaseSlashHandler):
+    command = 'itsfine'
+
     log = getLogger('ItsFineHandler')
 
-    def handle(self):
-        self.log.debug('handle:')
+    def handle(self, options, args):
+        self.log.debug('handle: options=%s, args=%s', options, args)
         url = 'https://i2.wp.com/johngaltfla.com/wordpress/wp-content/' \
             'uploads/2016/06/DOGFIRE.gif'
-        self.write_image_response("It's Fine", url, 'f49b42')
+        self.write_image_response(options.title, url, 'f49b42')
 
-    def help(self):
-        return 'No options'
+    def get_parser(self):
+        parser = super(ItsfineHandler, self).get_parser()
+        parser.add_argument('--title', default="It's fine",
+                            help='The title of the response')
+        return parser
 
 
 if __name__ == '__main__':

@@ -22,6 +22,8 @@ from tornado.web import HTTPError
 
 
 class SlackBackend(object):
+    leader = '/'
+
     log = getLogger('SlackBackend')
 
     session = Session()

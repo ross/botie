@@ -2,7 +2,10 @@
 #
 #
 
+from io import StringIO
 from tornado.web import RequestHandler
+
+from ..parser import BotParser
 
 
 class BaseSlashHandler(RequestHandler):
@@ -17,7 +20,21 @@ class BaseSlashHandler(RequestHandler):
         if text == 'help':
             self.write_simple_response(self.help())
             return
-        self.handle()
+        options, args = self.parse(text)
+        self.handle(options, args)
+
+    def help(self):
+        buf = StringIO()
+        self.get_parser().print_help(file=buf)
+        return buf.getvalue()
+
+    def get_parser(self):
+        return BotParser(prog='{}{}'.format(self.backend.leader,
+                                            self.command))
+
+    def parse(self, text):
+        parser = self.get_parser()
+        return parser.parse_known_args(text)
 
     @property
     def command(self):
