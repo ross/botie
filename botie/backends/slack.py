@@ -53,6 +53,11 @@ class SlackBackend(object):
             self.log.error('reply_delayed: resp.content=%s', content)
         resp.raise_for_status()
 
+    def write_echo(self, handler):
+        self._write(handler, {
+            'response_type': 'in_channel'
+        })
+
     def _simple_data(self, text):
         return {
             'response_type': 'in_channel',

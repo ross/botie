@@ -44,6 +44,9 @@ class BaseSlashHandler(RequestHandler):
     def text(self):
         return self.backend.text(self)
 
+    def write_echo(self):
+        return self.backend.write_echo(self)
+
     def write_simple_response(self, text):
         return self.backend.write_simple_response(self, text)
 
