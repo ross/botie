@@ -13,6 +13,10 @@ class BaseSlashHandler(RequestHandler):
     def post(self):
         self.log.debug('post:')
         self.backend.check_auth(self)
+        text = self.text
+        if text == 'help':
+            self.write_simple_response(self.help())
+            return
         self.handle()
 
     @property

@@ -23,6 +23,9 @@ class EchoHandler(BaseSlashHandler):
         self.log.debug('handle:')
         self.write_simple_response(self.text)
 
+    def help(self):
+        return 'It echos back what you type'
+
 
 class ItsfineHandler(BaseSlashHandler):
     log = getLogger('ItsFineHandler')
@@ -32,6 +35,9 @@ class ItsfineHandler(BaseSlashHandler):
         url = 'https://i2.wp.com/johngaltfla.com/wordpress/wp-content/' \
             'uploads/2016/06/DOGFIRE.gif'
         self.write_image_response("It's Fine", url, 'f49b42')
+
+    def help(self):
+        return 'No options'
 
 
 if __name__ == '__main__':
