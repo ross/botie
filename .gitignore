@@ -1,0 +1,9 @@
+*.pyc
+.coverage
+.env
+botie.egg-info/
+coverage.xml
+dist/
+env/
+htmlcov/
+nosetests.xml
