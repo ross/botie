@@ -35,7 +35,7 @@ class ItsfineHandler(BaseSlashHandler):
         self.log.debug('handle: options=%s, args=%s', options, args)
         url = 'https://i2.wp.com/johngaltfla.com/wordpress/wp-content/' \
             'uploads/2016/06/DOGFIRE.gif'
-        self.write_image_response(options.title, url, 'f49b42')
+        self.write_image_response(options.title, url, color='f49b42')
 
     def get_parser(self):
         parser = super(ItsfineHandler, self).get_parser()
