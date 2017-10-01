@@ -2,8 +2,43 @@
 #
 #
 
-from argparse import ArgumentError, ArgumentParser
+from argparse import Action, ArgumentError, ArgumentParser
 from re import compile as re_compile
+
+
+# https://stackoverflow.com/a/9236426
+class NoAction(Action):
+
+    def __init__(self, option_strings, dest, default=True, required=False,
+                 help=None):
+        opt = option_strings[0]
+        option_strings = [opt, '--no-{}'.format(opt[2:])]
+        super(NoAction, self).__init__(option_strings, dest, nargs=0,
+                                       const=None, default=default,
+                                       required=required, help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        if option_string and option_string.startswith('--no-'):
+            setattr(namespace, self.dest, False)
+        else:
+            setattr(namespace, self.dest, True)
+
+
+class HasSpacesAction(Action):
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        setattr(namespace, self.dest, ' '.join(values))
+
+
+class MarkerAction(Action):
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        if len(values) not in (1, 2):
+            raise ArgumentError(self, 'requires 1 or 2 values')
+        try:
+            setattr(namespace, self.dest, [float(v) for v in values])
+        except ValueError as e:
+            raise ArgumentError(self, str(e))
 
 
 class BotParser(ArgumentParser):
