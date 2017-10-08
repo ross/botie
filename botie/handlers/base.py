@@ -20,8 +20,8 @@ class BaseSlashHandler(RequestHandler):
         if text == 'help':
             self.write_simple_response(self.help())
             return
-        options, args = self.parse(text)
-        self.handle(options, args)
+        params = self.parse(text)
+        self.handle(*params)
 
     def help(self):
         buf = StringIO()
