@@ -30,17 +30,6 @@ class HasSpacesAction(Action):
         setattr(namespace, self.dest, ' '.join(values))
 
 
-class MarkerAction(Action):
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        if len(values) not in (1, 2):
-            raise ArgumentError(self, 'requires 1 or 2 values')
-        try:
-            setattr(namespace, self.dest, [float(v) for v in values])
-        except ValueError as e:
-            raise ArgumentError(self, str(e))
-
-
 class BotParser(ArgumentParser):
     splitter = re_compile(r'\s+')
 
