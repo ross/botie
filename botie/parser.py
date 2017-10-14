@@ -43,22 +43,3 @@ class BotParser(ArgumentParser):
 
     def error(self, message):
         raise ArgumentError(None, message)
-
-    def _split(self, text):
-        arg = []
-        args = []
-        for p in self.splitter.split(text):
-            if p.startswith('--'):
-                if arg:
-                    args.append(arg)
-                args.append([p])
-                arg = []
-            else:
-                arg.append(p)
-        if arg:
-            args.append(arg)
-
-        return [' '.join(p) for p in args]
-
-    def parse_known_args(self, text):
-        return super(BotParser, self).parse_known_args(self._split(text))

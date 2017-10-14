@@ -92,3 +92,18 @@ class SlackBackend(object):
                             color=None, title_link=None):
         return self._send(handler, self._image_data(title, image_url, text,
                                                     color, title_link))
+
+    def _error_data(self, text):
+        return {
+            'response_type': 'in_channel',
+            'attachments': [{
+                'color': 'ff0000',
+                'text': text,
+            }]
+        }
+
+    def write_error_response(self, handler, text):
+        return self._write(handler, self._error_data(text))
+
+    def send_error_response(self, handler, text):
+        return self._send(handler, self._error_data(text))

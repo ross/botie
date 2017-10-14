@@ -2,6 +2,7 @@
 #
 #
 
+from argparse import ArgumentError
 from io import StringIO
 from tornado.web import RequestHandler
 
@@ -20,8 +21,11 @@ class BaseSlashHandler(RequestHandler):
         if text == 'help':
             self.write_simple_response(self.help())
             return
-        params = self.parse(text)
-        self.handle(*params)
+        try:
+            params = self.parse(text)
+            self.handle(*params)
+        except ArgumentError as e:
+            self.backend.write_error_response(self, e.message)
 
     def help(self):
         buf = StringIO()
@@ -32,9 +36,26 @@ class BaseSlashHandler(RequestHandler):
         return BotParser(prog='{}{}'.format(self.backend.leader,
                                             self.command))
 
+    def _split(self, text):
+        arg = []
+        args = []
+        for p in BotParser.splitter.split(text):
+            if p.startswith('--'):
+                if arg:
+                    args.append(arg)
+                args.append([p])
+                arg = []
+            else:
+                arg.append(p)
+        if arg:
+            args.append(arg)
+
+        return [' '.join(p) for p in args]
+
     def parse(self, text):
         parser = self.get_parser()
-        return parser.parse_known_args(text)
+        args = self._split(text)
+        return parser.parse_known_args(args)
 
     @property
     def command(self):
