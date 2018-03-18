@@ -42,6 +42,20 @@ class SlackBackend(object):
     def text(self, handler):
         return handler.get_argument('text')
 
+    def user_name(self, handler):
+        return handler.get_argument('user_name')
+
+    def user_mention(self, handler):
+        return '<@{}>'.format(handler.get_argument('user_id'))
+
+    @property
+    def pre_start(self):
+        return '```'
+
+    @property
+    def pre_end(self):
+        return '```'
+
     def _write(self, handler, data):
         handler.write(data)
 
