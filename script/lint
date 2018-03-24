@@ -16,6 +16,5 @@ fi
 
 SOURCES="*.py botie/*.py botie/*/*.py"
 
-pep8 $SOURCES
+pycodestyle $SOURCES
 pyflakes $SOURCES
-
