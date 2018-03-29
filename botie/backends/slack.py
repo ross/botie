@@ -28,8 +28,10 @@ class SlackBackend(object):
 
     session = Session()
 
-    def __init__(self, auth_tokens):
+    def __init__(self, auth_tokens,
+                 response_url_prefix='https://hooks.slack.com'):
         self.auth_tokens = auth_tokens
+        self.response_url_prefix = response_url_prefix
 
     def check_auth(self, handler):
         if handler.get_argument('token', 'no-exist') not in self.auth_tokens:
