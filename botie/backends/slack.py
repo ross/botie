@@ -35,6 +35,9 @@ class SlackBackend(object):
         if handler.get_argument('token', 'no-exist') not in self.auth_tokens:
             self.log.warning('check_auth: invalid auth token')
             raise HTTPError(401, 'Authentication required')
+        response_url = handler.get_argument('response_url')
+        if not response_url.startswith(self.response_url_prefix):
+            raise HTTPError(400, 'Invalid response_url')
 
     def command(self, handler):
         return handler.get_argument('command')
